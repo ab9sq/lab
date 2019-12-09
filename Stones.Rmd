@@ -1,0 +1,87 @@
+---
+title: "Stones"
+author: "Nick Lauerman"
+date: "12/3/2019"
+output: 
+  pdf_document: 
+    fig_caption: yes
+    fig_height: 6
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Libraries
+```{r libraries}
+library(MASS)
+library(tidyverse)
+```
+
+# read data
+```{r}
+stones <- read_csv(file = "./data/stones.csv")
+stones$ct <- stones$mass * 5
+stones$cost_raw <- stones$mass * stones$`price per gram`
+stones$stone <- factor(stones$stone)
+
+```
+
+# summary stats
+```{r}
+summary(stones$ct)
+sd(stones$ct)
+summary(stones$cost_raw)
+sd(stones$cost_raw)
+sumStats <- stones %>%
+  group_by(stone) %>%
+  summarise(count = n(),
+            avgSize = mean(ct),
+            sdSize = sd(ct),
+            medSize = median(ct),
+            largest = max(ct),
+            smallest = min(ct))
+
+sumStats
+```
+
+# plots
+```{r}
+truehist(stones$ct)
+ggplot(data = stones,
+       aes(ct)) +
+     geom_histogram()
+
+boxplot(stones$ct)
+
+ggplot(data = stones,
+       aes(y = ct,
+           x = stone)) +
+     geom_boxplot()
+
+truehist(stones$cost_raw)
+
+ggplot(data = stones,
+       aes(cost_raw)) +
+     geom_histogram()
+
+ggplot(data = stones,
+       aes(cost_raw)) +
+     geom_histogram() +
+  facet_wrap( ~ stone)
+
+ggplot(data = stones,
+       aes(cost_raw)) +
+     geom_density() +
+  facet_wrap( ~ stone)
+              
+              
+boxplot(stones$cost_raw)
+
+ggplot(data = stones,
+       aes(y = cost_raw,
+           x = stone)) +
+     geom_boxplot()
+```
+
