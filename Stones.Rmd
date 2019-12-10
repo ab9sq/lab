@@ -41,7 +41,8 @@ sumStats <- stones %>%
             sdSize = sd(ct),
             medSize = median(ct),
             largest = max(ct),
-            smallest = min(ct))
+            smallest = min(ct),
+            cost = mean(cost_raw))
 
 sumStats
 ```
